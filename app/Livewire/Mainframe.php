@@ -35,9 +35,6 @@ class Mainframe extends Component
 
     public $battleLog = [];
 
-
-
-
     public function render()
     {
         return view('livewire.mainframe');
