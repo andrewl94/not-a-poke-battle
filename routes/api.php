@@ -1,7 +1,6 @@
 <?php
 
-use App\Actions\AssignPokemon;
-use Illuminate\Http\Request;
+use App\Actions\AssignPlayers;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/pokemon',AssignPokemon::class);
+Route::get('/battle',AssignPlayers::class);

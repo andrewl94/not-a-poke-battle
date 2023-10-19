@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Pokemon;
 
+use App\Data\Pokemon\Pokemon;
 use App\Data\Pokemon\PokemonCandidateEndpoint;
 use Exception;
 
@@ -17,7 +18,9 @@ class GetPokemonList
     public function handle()
     {
         $candidates = $this->getCandidates();
+
         $selectedPokemons = [];
+
         foreach ($candidates as $key => $candidate) {
             $info = GetPokemonInfo::run($candidate);
             $selectedPokemons[] = [
@@ -26,7 +29,8 @@ class GetPokemonList
             ];
         }
 
-        return $selectedPokemons;
+        $pokemons = Pokemon::collection($selectedPokemons);
+        return $pokemons;
     }
 
 
@@ -37,9 +41,11 @@ class GetPokemonList
             $response =  Http::get(config('app.pokeapi_endpoint') . 'pokemon', [
                 'limit' => '2000'
             ]);
+
             if (!$response->ok()) {
                 throw new Exception("Unable to obtain candidates data from api");
             }
+
             $content = $response->json();
 
             $validator = Validator::make($content, [

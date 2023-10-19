@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Pokemon;
 
 use App\Actions\Pokemon\Moves\MoveGetInfo;
 use App\Data\Pokemon\Moves\MoveData;
 use App\Data\Pokemon\Moves\MoveEndpoint;
 use App\Data\Pokemon\PokemonCandidateEndpoint;
+use App\Data\Pokemon\PokemonInfo;
 use App\Data\Pokemon\PokemonStatus;
 use Exception;
 use Illuminate\Support\Facades\Cache;
@@ -38,29 +39,34 @@ class GetPokemonInfo
 
         $stats = $this->getStats($resultData);
 
-        $infos = [
-            "stats" => $stats,
-            "types" => $types,
-            "moves" => $moves,
-        ];
-
-        return $infos;
+        try {
+            $infos = PokemonInfo::validateAndCreate([
+                "stats" => $stats->toArray(),
+                "types" => $types->toArray(),
+                "moves" => $moves->toArray(),
+            ]);
+            return $infos;
+        } catch (\Throwable $th) {
+            throw new Exception("Unable to create proper pokemon data");
+        }
     }
 
 
     private function getStats($resultData)
     {
         $allStatus = collect($resultData->get("stats"));
+
         $statusData = $allStatus->flatMap(function ($status) {
             return $this->calculateLevel100Status(str_replace("-", "", $status["stat"]["name"]), $status["base_stat"]);
         });
+
         try {
             $status = PokemonStatus::validateAndCreate($statusData);
             return $status;
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             throw new Exception("Invalid pokemon status data");
         }
+
     }
 
     private function calculateLevel100Status(string $statType, int $statBase = 0)

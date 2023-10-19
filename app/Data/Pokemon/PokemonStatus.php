@@ -12,8 +12,8 @@ class PokemonStatus extends Data
         public int $attack,
         public int $defense,
         public int $speed,
-        public ?int $specialattack,
-        public ?int $specialdefense,
+        public int $specialattack,
+        public int $specialdefense,
     ) {
     }
 }
