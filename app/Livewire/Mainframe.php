@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Data\Players;
 use App\Enums\TypesDynamics;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -11,6 +12,7 @@ class Mainframe extends Component
 {
 
     public $player;
+
     public $npc;
 
     public $gameState = null;
@@ -33,6 +35,9 @@ class Mainframe extends Component
 
     public $battleLog = [];
 
+
+
+
     public function render()
     {
         return view('livewire.mainframe');
@@ -41,15 +46,19 @@ class Mainframe extends Component
     public function mount()
     {
         $response = Http::get(url("/api/battle"));
+
         if (!$response->ok()) {
             Log::debug($response->json());
             $this->gameLoaded = false;
             return;
         }
-        $players = $response->object();
-        $this->player = $players->mainPlayer;
-        $this->npc = $players->npc;
+        try {
+            $players = Players::collection($response->json());
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+        }
 
+        $players->map(fn ($player) => $player->human === true ? $this->player = json_decode($player->toJson()) : $this->npc = json_decode($player->toJson()));
 
         $this->playerHealth["current"] = $this->player->pokemon->info->stats->hp;
         $this->playerHealth["max"] =  $this->playerHealth["current"];
@@ -62,7 +71,8 @@ class Mainframe extends Component
         $this->gameLoaded = true;
     }
 
-    public function reload(){
+    public function reload()
+    {
         return redirect("/");
     }
 
@@ -108,7 +118,6 @@ class Mainframe extends Component
         ];
     }
 
-
     private function damage($attacker, string $selectedMove, $target)
     {
         $move = collect($attacker->info->moves)->first(function ($mv) use ($selectedMove) {
@@ -138,6 +147,7 @@ class Mainframe extends Component
         $random = rand(0, 255);
         return $random < ($speed / 2) ? 2 : 1;
     }
+
     private function getAdFactor($move, $attackerStats, $targetStats)
     {
         $a = 0;

@@ -1,4 +1,4 @@
-<section class="container m-auto px-2 lg:px-6 place-items-center justify-items-center">
+<div class="container m-auto px-2 lg:px-6 place-items-center justify-items-center">
 
 
     @if ($gameLoaded === false)
@@ -83,4 +83,4 @@
         </div>
 
     @endif
-</section>
+</div>
