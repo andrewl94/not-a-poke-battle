@@ -8,6 +8,7 @@ use Exception;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -17,6 +18,23 @@ class GetPokemonList
 
     public function handle()
     {
+        try {
+            return $this->mountPokemons();
+        } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
+            //Trying a second time
+
+            try {
+                return $this->mountPokemons();
+            } catch (\Throwable $secondTry) {
+                Log::debug($secondTry->getMessage());
+                throw $secondTry;
+            }
+        }
+    }
+
+    private function mountPokemons()
+    {
         $candidates = $this->getCandidates();
 
         $selectedPokemons = [];
@@ -24,25 +42,25 @@ class GetPokemonList
         foreach ($candidates as $key => $candidate) {
             $info = GetPokemonInfo::run($candidate);
             $selectedPokemons[] = [
-                "name" => $candidate->name,
+                "name" => str_replace("-", " ", $candidate->name),
                 "info" => $info
             ];
         }
 
-        $pokemons = Pokemon::collection($selectedPokemons);
-        return $pokemons;
+        return Pokemon::collection($selectedPokemons);
     }
 
 
     private function getCandidates()
     {
 
-        $resultData = Cache::remember('all_pokemons', 60, function () {
+        $resultData = Cache::remember('all_pokemons', 60 * 60, function () {
             $response =  Http::get(config('app.pokeapi_endpoint') . 'pokemon', [
                 'limit' => '2000'
             ]);
 
             if (!$response->ok()) {
+                Log::debug($response->json());
                 throw new Exception("Unable to obtain candidates data from api");
             }
 
@@ -53,6 +71,7 @@ class GetPokemonList
             ]);
 
             if ($validator->fails()) {
+                Log::debug($validator->getMessageBag());
                 throw new Exception("Insufficient api data");
             }
 
@@ -64,6 +83,7 @@ class GetPokemonList
         $candidates = $resultData->random(2);
 
         if ($candidates->count() !== 2) {
+            Log::debug($candidates);
             throw new Exception("Invalid candidates quantity");
         }
 

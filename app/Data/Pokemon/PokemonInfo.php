@@ -13,7 +13,8 @@ class PokemonInfo extends Data
         public PokemonStatus $stats,
         #[DataCollectionOf(MoveData::class)]
         public DataCollection $moves,
-        public array $types
+        public array $types,
+        public string $sprite
     ) {
     }
 }

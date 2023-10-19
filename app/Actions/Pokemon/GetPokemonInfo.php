@@ -11,6 +11,7 @@ use App\Data\Pokemon\PokemonStatus;
 use Exception;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class GetPokemonInfo
@@ -27,6 +28,7 @@ class GetPokemonInfo
         $resultData = Cache::remember($pokemon->url, 60, function () use ($pokemon) {
             $response =  Http::get($pokemon->url);
             if (!$response->ok()) {
+                Log::debug($response->json());
                 throw new Exception("Unable to obtain candidates data from api");
             }
             $content = $response->json();
@@ -39,14 +41,18 @@ class GetPokemonInfo
 
         $stats = $this->getStats($resultData);
 
+        $sprite = $this->getSprite($resultData);
+
         try {
             $infos = PokemonInfo::validateAndCreate([
                 "stats" => $stats->toArray(),
                 "types" => $types->toArray(),
                 "moves" => $moves->toArray(),
+                "sprite" => $sprite
             ]);
             return $infos;
         } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
             throw new Exception("Unable to create proper pokemon data");
         }
     }
@@ -64,9 +70,9 @@ class GetPokemonInfo
             $status = PokemonStatus::validateAndCreate($statusData);
             return $status;
         } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
             throw new Exception("Invalid pokemon status data");
         }
-
     }
 
     private function calculateLevel100Status(string $statType, int $statBase = 0)
@@ -85,6 +91,7 @@ class GetPokemonInfo
                 $statType => $finalStat
             ];
         } catch (\Throwable $th) {
+            Log::debug($th->getMessage());
             throw new Exception("Invalid status calculation");
         }
     }
@@ -114,5 +121,12 @@ class GetPokemonInfo
         });
 
         return $typesData;
+    }
+
+    private function getSprite($resultData)
+    {
+        $sprites = collect($resultData->get("sprites"));
+
+        return $sprites->get("front_default");
     }
 }
