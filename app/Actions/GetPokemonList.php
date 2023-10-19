@@ -2,13 +2,11 @@
 
 namespace App\Actions;
 
-use App\Data\PokemonList;
+use App\Data\Pokemon\PokemonCandidateEndpoint;
 use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
+
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -18,51 +16,53 @@ class GetPokemonList
 
     public function handle()
     {
-        $content = $this->getCandidates();
-        return $content;
+        $candidates = $this->getCandidates();
+        $selectedPokemons = [];
+        foreach ($candidates as $key => $candidate) {
+            $info = GetPokemonInfo::run($candidate);
+            $selectedPokemons[] = [
+                "name" => $candidate->name,
+                "info" => $info
+            ];
+        }
+
+        return $selectedPokemons;
     }
+
 
     private function getCandidates()
     {
-        $response = Http::get(config('app.pokeapi_endpoint') . 'pokemon', [
-            'limit' => '2000'
-        ]);
 
-        $completeList = PokemonList::from($response->json());
-        $candidates = Arr::random($completeList->results, 2);
+        $resultData = Cache::remember('all_pokemons', 60, function () {
+            $response =  Http::get(config('app.pokeapi_endpoint') . 'pokemon', [
+                'limit' => '2000'
+            ]);
+            if (!$response->ok()) {
+                throw new Exception("Unable to obtain candidates data from api");
+            }
+            $content = $response->json();
 
-        if (!$this->assertCandidates($candidates)) {
-            throw new Exception("Invalid candidates");
-        }
-
-        return $candidates;
-    }
-
-    private function assertCandidates(array $candidates): bool
-    {
-        if (count($candidates) !== 2) {
-            throw new Exception("Invalid candidates quantity");
-        }
-
-        foreach ($candidates as $candidate) {
-            $validator = Validator::make($candidate, [
-                'name' => [
-                    "required",
-                    "string",
-                    "min:2"
-                ],
-                'url' => [
-                    "required",
-                    "string",
-                    "regex:/https:\/\/pokeapi\.co\/api\/v2\/pokemon\/[0-9]{1,6}\//"
-                ],
+            $validator = Validator::make($content, [
+                'results' => 'required|array|min:2',
             ]);
 
             if ($validator->fails()) {
-                throw new Exception("Invalid candidate data structure");
+                throw new Exception("Insufficient api data");
             }
+
+            $content = $validator->validated();
+
+            return collect($content["results"]);
+        });
+
+        $candidates = $resultData->random(2);
+
+        if ($candidates->count() !== 2) {
+            throw new Exception("Invalid candidates quantity");
         }
 
-        return true;
+        $candidateEndpoints = PokemonCandidateEndpoint::collection($candidates);
+
+        return $candidateEndpoints;
     }
 }
