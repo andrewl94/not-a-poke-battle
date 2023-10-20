@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\AssignPlayersAction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,6 +19,4 @@ Route::get('/', function () {
 });
 
 
-Route::get('/battle', function () {
-    return view('battle');
-});
+Route::get('/battle', AssignPlayersAction::class);

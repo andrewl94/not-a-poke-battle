@@ -14,23 +14,23 @@
             @livewire(
                 'poke-frames',
                 [
-                    'sprite' => $player->pokemon->info->sprite,
-                    'name' => $player->pokemon->name,
+                    'sprite' => $player['pokemon']['info']['sprite'],
+                    'name' => $player['pokemon']['name'],
                     'currentHealth' => $playerHealth['current'],
                     'ratioHealth' => $playerHealth['ratio'],
                 ],
-                key($player->pokemon->name . '_' . $playerHealth['current'])
+                key($player['pokemon']['name'] . '_' . $playerHealth['current'])
             )
 
             @livewire(
                 'poke-frames',
                 [
-                    'sprite' => $npc->pokemon->info->sprite,
-                    'name' => $npc->pokemon->name,
+                    'sprite' => $npc['pokemon']['info']['sprite'],
+                    'name' => $npc['pokemon']['name'],
                     'currentHealth' => $npcHealth['current'],
                     'ratioHealth' => $npcHealth['ratio'],
                 ],
-                key($npc->pokemon->name . '_' . $npcHealth['current'])
+                key($npc['pokemon']['name'] . '_' . $npcHealth['current'])
             )
 
 
@@ -40,8 +40,8 @@
             <span class="text-lg py-2">Choose your move</span>
             <select class="capitalize" name="move" wire:model="selectedMove">
                 <option class="text-center" value="">-</option>
-                @foreach ($player->pokemon->info->moves as $move)
-                    <option value="{{ $move->name }}" class="text-center">{{ $move->name }}</option>
+                @foreach ($player['pokemon']['info']['moves'] as $move)
+                    <option value="{{ $move['name'] }}" class="text-center">{{ $move['name'] }}</option>
                 @endforeach
             </select>
 

@@ -2,21 +2,21 @@
 
 namespace App\Livewire;
 
+use App\Actions\AssignPlayersAction;
+use App\DTO\PlayerDTO;
 use App\DTO\Players;
+use App\DTO\PlayersDTO;
 use App\Enums\TypesDynamicsEnum;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+use Spatie\LaravelData\DataCollection;
 
 class Mainframe extends Component
 {
-    public $player;
-
-    public $npc;
-
     public $gameState = null;
 
-    public $gameLoaded = null;
+    public $gameLoaded = true;
 
     public $selectedMove = null;
 
@@ -36,35 +36,7 @@ class Mainframe extends Component
 
     public function render()
     {
-        return view('livewire.mainframe');
-    }
-
-    public function mount()
-    {
-        $response = Http::get(url("/api/battle"));
-
-        if (!$response->ok()) {
-            Log::debug($response->json());
-            $this->gameLoaded = false;
-            return;
-        }
-        try {
-            $players = Players::collection($response->json());
-        } catch (\Throwable $th) {
-            dd($th->getMessage());
-        }
-
-        $players->map(fn ($player) => $player->human === true ? $this->player = json_decode($player->toJson()) : $this->npc = json_decode($player->toJson()));
-
-        $this->playerHealth["current"] = $this->player->pokemon->info->stats->hp;
-        $this->playerHealth["max"] =  $this->playerHealth["current"];
-        $this->playerHealth["ratio"] = 100;
-
-        $this->npcHealth["current"] = $this->npc->pokemon->info->stats->hp;
-        $this->npcHealth["max"] =  $this->npcHealth["current"];
-        $this->npcHealth["ratio"] = 100;
-
-        $this->gameLoaded = true;
+        return view('livewire.mainframe', AssignPlayersAction::run());
     }
 
     public function reload()
