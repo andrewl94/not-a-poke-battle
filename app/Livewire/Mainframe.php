@@ -2,15 +2,14 @@
 
 namespace App\Livewire;
 
-use App\Data\Players;
-use App\Enums\TypesDynamics;
+use App\DTO\Players;
+use App\Enums\TypesDynamicsEnum;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class Mainframe extends Component
 {
-
     public $player;
 
     public $npc;
@@ -181,7 +180,7 @@ class Mainframe extends Component
         $factors = [];
         foreach ($attackerTypes as $atype) {
             $typeFactor = 0;
-            $dinamic = TypesDynamics::TYPES[$atype];
+            $dinamic = TypesDynamicsEnum::TYPES[$atype];
             foreach ($targetTypes as $ttype) {
                 $typeFactor += $dinamic[$ttype];
             }

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Data\Pokemon;
+namespace App\DTO\Pokemon;
 
 use Spatie\LaravelData\Attributes\Validation\Regex;
 use Spatie\LaravelData\Data;
 
-class PokemonCandidateEndpoint extends Data
+class PokemonCandidateEndpointDTO extends Data
 {
     public function __construct(
         public string $name,

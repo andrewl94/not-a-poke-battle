@@ -1,19 +1,24 @@
 <?php
 
-namespace App\Data\Pokemon;
+namespace App\DTO\Pokemon;
 
-use App\Data\Pokemon\Moves\MoveData;
+use App\DTO\Pokemon\Moves\MoveDataDTO;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
 use Spatie\LaravelData\DataCollection;
 
-class PokemonInfo extends Data
+class PokemonInfoDTO extends Data
 {
     public function __construct(
-        public PokemonStatus $stats,
-        #[DataCollectionOf(MoveData::class)]
+
+        /** @var \App\DTO\Pokemon\PokemonStatusDTO */
+        public PokemonStatusDTO $stats,
+
+        #[DataCollectionOf(MoveDataDTO::class)]
         public DataCollection $moves,
+
         public array $types,
+
         public string $sprite
     ) {
     }

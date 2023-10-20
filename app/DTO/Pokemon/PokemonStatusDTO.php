@@ -1,19 +1,18 @@
 <?php
 
-namespace App\Data\Pokemon;
+namespace App\DTO\Pokemon;
 
-use Spatie\LaravelData\Attributes\Validation\Regex;
 use Spatie\LaravelData\Data;
 
-class PokemonStatus extends Data
+class PokemonStatusDTO extends Data
 {
     public function __construct(
         public int $hp,
         public int $attack,
         public int $defense,
         public int $speed,
-        public int $specialattack,
-        public int $specialdefense,
+        public int $specialAttack,
+        public int $specialDefense,
     ) {
     }
 }

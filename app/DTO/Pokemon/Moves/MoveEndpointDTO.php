@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Data\Pokemon;
+namespace App\DTO\Pokemon\Moves;
 
 use Spatie\LaravelData\Attributes\Validation\Regex;
 use Spatie\LaravelData\Data;
 
-class Pokemon extends Data
+class MoveEndpointDTO extends Data
 {
     public function __construct(
         public string $name,
-        public PokemonInfo $info,
+        #[Regex('/^https:\/\/pokeapi\.co\/api\/v2\/move\/[0-9]{1,6}\//')]
+        public string $url,
     ) {
     }
 }

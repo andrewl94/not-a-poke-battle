@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Data;
+namespace App\DTO;
 
-use App\Data\Pokemon\Pokemon;
+use App\DTO\Pokemon\PokemonDTO;
 use Spatie\LaravelData\Attributes\Validation\Regex;
 use Spatie\LaravelData\Data;
 
-class Players extends Data
+class PlayersDTO extends Data
 {
     public function __construct(
-        public Pokemon $pokemon,
+        public PokemonDTO $pokemon,
         public bool $human,
     ) {
     }

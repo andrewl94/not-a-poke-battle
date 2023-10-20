@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\AssignPlayers;
+use App\Actions\AssignPlayersAction;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/battle',AssignPlayers::class);
+Route::get('/battle',AssignPlayersAction::class);
