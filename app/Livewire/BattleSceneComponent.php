@@ -26,10 +26,10 @@ class BattleSceneComponent extends Component
 
     public function mount()
     {
-        return retry([500, 1000], function () {
+        return retry(5, function () {
             $battle = StartBattleAction::run();
             $this->loadBattleState($battle);
-        });
+        },500);
 
     }
 
