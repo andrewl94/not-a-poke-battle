@@ -4,7 +4,6 @@ namespace App\Actions\Battle;
 
 use App\Actions\Pokemon\CreatePokemonDTOFromPokemonModelAction;
 use App\DTO\BattleStateDTO;
-use App\DTO\Pokemon\PokemonDTO;
 use App\Models\Battle;
 use App\Models\Move;
 use App\Models\Pokemon;
@@ -19,12 +18,11 @@ class AttackAction
     public function handle(int $battleId, int $moveId): BattleStateDTO
     {
 
-        $battle = Battle::with("playerPokemon.moves")
-            ->with("npcPokemon.moves")
+        $battle = Battle::with('playerPokemon.moves')
+            ->with('npcPokemon.moves')
             ->find($battleId);
 
         $move = $this->getSelectedMoveInformation($moveId);
-
 
         $playerPokemon = $battle->playerPokemon;
 
@@ -34,16 +32,15 @@ class AttackAction
 
         $npcPokemon = $this->assignDamageDoneToPokemon($npcPokemon, $damageDealtToNPC);
 
-        if (1 > $npcPokemon->current_hp) {
-            return $this->updateBattleStateAfterBattle(battleId: $battle->id, playerPokemon: $playerPokemon, npcPokemon: $npcPokemon);
+        if ($npcPokemon->current_hp < 1) {
+            return $this->updateBattleState(battleId: $battle->id, playerPokemon: $playerPokemon, npcPokemon: $npcPokemon);
         }
 
         $damageDealtToPlayer = $this->calculateMoveDamage(attacker: $npcPokemon, target: $playerPokemon, move: $this->getRandomMoveFromPokemon($npcPokemon));
 
         $playerPokemon = $this->assignDamageDoneToPokemon($playerPokemon, $damageDealtToPlayer);
 
-
-        return $this->updateBattleStateAfterBattle(battleId: $battle->id, playerPokemon: $playerPokemon, npcPokemon: $npcPokemon);
+        return $this->updateBattleState(battleId: $battle->id, playerPokemon: $playerPokemon, npcPokemon: $npcPokemon);
     }
 
     private function getRandomMoveFromPokemon(Pokemon $pokemon)
@@ -51,7 +48,7 @@ class AttackAction
         return $pokemon->moves->random();
     }
 
-    private function updateBattleStateAfterBattle(int $battleId, Pokemon $playerPokemon, Pokemon $npcPokemon): BattleStateDTO
+    private function updateBattleState(int $battleId, Pokemon $playerPokemon, Pokemon $npcPokemon): BattleStateDTO
     {
         $playerPokemon = CreatePokemonDTOFromPokemonModelAction::run($playerPokemon);
 
@@ -69,6 +66,7 @@ class AttackAction
             $pokemon->current_hp = $newHpValue;
         }
         $pokemon->update();
+
         return $pokemon;
     }
 
@@ -79,17 +77,17 @@ class AttackAction
 
     private function calculateMoveDamage(Pokemon $attacker, Pokemon $target, Move $move): int
     {
-        $pokemonDefaultLevel  = 100;
+        $pokemonDefaultLevel = 100;
 
         $randomizedDamageVariance = $this->getRandomizedDamageVariance();
 
         $stabMultiplier = 1;
-        if (true === $this->checkIfMoveIsSameTypeAsPokemon(pokemonTypes: $attacker->types, move: $move)) {
+        if ($this->checkIfMoveIsSameTypeAsPokemon(pokemonTypes: $attacker->types, move: $move) === true) {
             $stabMultiplier = 1.5;
         }
 
         $criticalMultiplier = 1;
-        if (true === $this->calculateIfAttackIsCritical(pokemonSpeed: $attacker->speed)) {
+        if ($this->calculateIfAttackIsCritical(pokemonSpeed: $attacker->speed) === true) {
             $criticalMultiplier = 2;
         }
 
@@ -102,9 +100,9 @@ class AttackAction
         $movePowerDamageFactor = $this->calculateTotalMovePower(levelDamageFactor: $levelDamageFactor, movePower: (int) $move->power, attackVersusDefenseFactor: $attackVersusDefenseFactor);
 
         $totalDamageDone = $movePowerDamageFactor * $stabMultiplier * $moveTypeDamageAgainstTargetMultiplier * $randomizedDamageVariance;
+
         return ceil($totalDamageDone);
     }
-
 
     private function calculateTotalMovePower(float $levelDamageFactor, int $movePower, float $attackVersusDefenseFactor)
     {
@@ -118,7 +116,7 @@ class AttackAction
 
         $moveMultipliers = TypeDamageMultiplier::whereActorType($move->type)->get();
         foreach ($target->types as $targetType) {
-            $relatedMultiplier = $moveMultipliers->firstWhere("target_type", $targetType);
+            $relatedMultiplier = $moveMultipliers->firstWhere('target_type', $targetType);
             $damageMultiplier *= $relatedMultiplier->multiplier;
         }
 
@@ -134,13 +132,13 @@ class AttackAction
 
         $type = Type::whereName($move->type)->firstOrFail();
 
-        if (true !== $type->is_physical) {
+        if ($type->is_physical !== true) {
             $attackPower = $attacker->special_attack;
 
             $defensePower = $target->special_defense;
         }
 
-        if (true == $this->checkIfAttackOrDefenseIsAboveThreshold(attackPower: $attackPower, defensePower: $defensePower)) {
+        if ($this->checkIfAttackOrDefenseIsAboveThreshold(attackPower: $attackPower, defensePower: $defensePower) == true) {
             $attackPower = $attackPower / 4;
             $defensePower = $defensePower / 4;
         }
@@ -172,17 +170,18 @@ class AttackAction
     {
         $randomizedThreshold = rand(0, 255);
         $speedThreshold = ceil($pokemonSpeed / 2);
+
         return $randomizedThreshold < $speedThreshold;
     }
 
-
     private function mockDamage(Battle $battle)
     {
-        $battle->playerPokemon()->update(["current_hp" => rand(10, 100)]);
-        $battle->npcPokemon()->update(["current_hp" => rand(10, 100)]);
+        $battle->playerPokemon()->update(['current_hp' => rand(10, 100)]);
+        $battle->npcPokemon()->update(['current_hp' => rand(10, 100)]);
+
         return $battle
             ->refresh()
-            ->load("playerPokemon.moves")
-            ->load("npcPokemon.moves");
+            ->load('playerPokemon.moves')
+            ->load('npcPokemon.moves');
     }
 }

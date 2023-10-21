@@ -2,20 +2,15 @@
 
 namespace App\Actions\Pokemon;
 
+use App\DTO\Pokemon\PokemonCandidateEndpointDTO;
+use App\DTO\Pokemon\PokemonDTO;
+use App\Services\PokeApiService;
 use Exception;
-
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-
-use App\DTO\Pokemon\PokemonDTO;
-use App\DTO\Pokemon\PokemonCandidateEndpointDTO;
-
-use App\Services\PokeApiService;
-
 use Lorisleiva\Actions\Concerns\AsAction;
-
 use Spatie\LaravelData\DataCollection;
 
 class GetPokemonsForBattleAction
@@ -58,7 +53,7 @@ class GetPokemonsForBattleAction
 
         $listOfAllPokemons = Cache::remember('list_of_all_pokemons', $oneHourInSeconds, function () {
 
-            $response =  $this->pokeApiService->getAllPokemons();
+            $response = $this->pokeApiService->getAllPokemons();
 
             $validator = Validator::make($response, [
                 'results' => 'required|array|min:2',
@@ -66,12 +61,12 @@ class GetPokemonsForBattleAction
 
             if ($validator->fails()) {
                 Log::debug($validator->getMessageBag());
-                throw new Exception("Insufficient api data");
+                throw new Exception('Insufficient api data');
             }
 
             $content = $validator->validated();
 
-            return collect($content["results"]);
+            return collect($content['results']);
         });
 
         $pokemonCandidates = $listOfAllPokemons->random(2);

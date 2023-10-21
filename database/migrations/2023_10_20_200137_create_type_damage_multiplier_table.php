@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('type_damage_multipliers', function (Blueprint $table) {
-            $table->string("actor_type");
-            $table->string("target_type");
-            $table->float("multiplier");
+            $table->string('actor_type');
+            $table->string('target_type');
+            $table->float('multiplier');
         });
     }
 

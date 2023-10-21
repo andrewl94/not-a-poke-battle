@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('types', function (Blueprint $table) {
-            $table->string("name");
-            $table->boolean("is_physical");
+            $table->string('name');
+            $table->boolean('is_physical');
         });
     }
 

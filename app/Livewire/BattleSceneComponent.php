@@ -2,8 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Actions\StartBattleAction;
 use App\Actions\Battle\AttackAction;
+use App\Actions\StartBattleAction;
 use App\DTO\BattleStateDTO;
 use Livewire\Component;
 
@@ -43,12 +43,12 @@ class BattleSceneComponent extends Component
 
     public function reload()
     {
-        return redirect("/");
+        return redirect('/');
     }
 
     public function attack()
     {
-        if (!$this->selectedMoveId) {
+        if (! $this->selectedMoveId) {
             return;
         }
         $battle = AttackAction::run(battleId: $this->battleId, moveId: $this->selectedMoveId);

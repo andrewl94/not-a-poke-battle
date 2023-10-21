@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('battles', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger("player_pokemon_id");
+            $table->unsignedBigInteger('player_pokemon_id');
 
-            $table->unsignedBigInteger("npc_pokemon_id");
+            $table->unsignedBigInteger('npc_pokemon_id');
 
             $table->foreign('player_pokemon_id')->references('id')->on('pokemon');
 

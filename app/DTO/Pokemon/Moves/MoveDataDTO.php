@@ -2,7 +2,6 @@
 
 namespace App\DTO\Pokemon\Moves;
 
-use Spatie\LaravelData\Attributes\Validation\Regex;
 use Spatie\LaravelData\Data;
 
 class MoveDataDTO extends Data

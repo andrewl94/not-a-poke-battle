@@ -185,8 +185,6 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
-
-
     'pokeapi_endpoint' => env('POKEAPI_ENDPOINT', 'https://pokeapi.co/api/v2/'),
 
 ];

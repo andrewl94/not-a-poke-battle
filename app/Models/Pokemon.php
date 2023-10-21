@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Pokemon extends Model
 {
-    protected $guarded = ["id"];
+    protected $guarded = ['id'];
 
     protected $casts = [
-        "types" => "array"
+        'types' => 'array',
     ];
 
     protected $attributes = [

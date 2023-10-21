@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Type;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TypeSeeder extends Seeder
@@ -11,7 +10,6 @@ class TypeSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-
     const TYPES = [
         ['name' => 'normal', 'is_physical' => false],
         ['name' => 'fire', 'is_physical' => false],

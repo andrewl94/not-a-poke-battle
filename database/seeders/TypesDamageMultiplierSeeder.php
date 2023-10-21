@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Enums\TypeEnum;
 use App\Models\TypeDamageMultiplier;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class TypesDamageMultiplierSeeder extends Seeder
@@ -12,7 +11,6 @@ class TypesDamageMultiplierSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-
     const MULTIPLIER = [
         TypeEnum::NORMAL->value => [
             TypeEnum::NORMAL->value => 1,
@@ -32,7 +30,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::FIRE->value => [
             TypeEnum::NORMAL->value => 1,
@@ -52,7 +50,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 0.5,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 2,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::WATER->value => [
             TypeEnum::NORMAL->value => 1,
@@ -72,7 +70,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 0.5,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 1,
-            TypeEnum::FAIRY->value => 0.5
+            TypeEnum::FAIRY->value => 0.5,
         ],
         TypeEnum::ELECTRIC->value => [
             TypeEnum::NORMAL->value => 1,
@@ -92,7 +90,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 0.5,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::GRASS->value => [
             TypeEnum::NORMAL->value => 1,
@@ -112,7 +110,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 0.5,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::ICE->value => [
             TypeEnum::NORMAL->value => 1,
@@ -132,7 +130,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 2,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 2,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::FIGHTING->value => [
             TypeEnum::NORMAL->value => 2,
@@ -152,7 +150,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 2,
             TypeEnum::STEEL->value => 2,
-            TypeEnum::FAIRY->value => 0.5
+            TypeEnum::FAIRY->value => 0.5,
         ],
         TypeEnum::POISON->value => [
             TypeEnum::NORMAL->value => 1,
@@ -172,7 +170,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 0,
-            TypeEnum::FAIRY->value => 2
+            TypeEnum::FAIRY->value => 2,
         ],
         TypeEnum::GROUND->value => [
             TypeEnum::NORMAL->value => 1,
@@ -192,7 +190,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 2,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::FLYING->value => [
             TypeEnum::NORMAL->value => 1,
@@ -212,7 +210,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::PSYCHIC->value => [
             TypeEnum::NORMAL->value => 1,
@@ -232,7 +230,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 2,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::BUG->value => [
             TypeEnum::NORMAL->value => 1,
@@ -252,7 +250,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 2,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 0.5
+            TypeEnum::FAIRY->value => 0.5,
         ],
         TypeEnum::ROCK->value => [
             TypeEnum::NORMAL->value => 1,
@@ -272,7 +270,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::GHOST->value => [
             TypeEnum::NORMAL->value => 0,
@@ -292,7 +290,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 2,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 1
+            TypeEnum::FAIRY->value => 1,
         ],
         TypeEnum::DRAGON->value => [
             TypeEnum::NORMAL->value => 1,
@@ -312,7 +310,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 2,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 0
+            TypeEnum::FAIRY->value => 0,
         ],
         TypeEnum::DARK->value => [
             TypeEnum::NORMAL->value => 1,
@@ -332,7 +330,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 0.5,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 0.5
+            TypeEnum::FAIRY->value => 0.5,
         ],
         TypeEnum::STEEL->value => [
             TypeEnum::NORMAL->value => 1,
@@ -352,7 +350,7 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 1,
             TypeEnum::DARK->value => 1,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 2
+            TypeEnum::FAIRY->value => 2,
         ],
         TypeEnum::FAIRY->value => [
             TypeEnum::NORMAL->value => 1,
@@ -372,17 +370,18 @@ class TypesDamageMultiplierSeeder extends Seeder
             TypeEnum::DRAGON->value => 2,
             TypeEnum::DARK->value => 2,
             TypeEnum::STEEL->value => 0.5,
-            TypeEnum::FAIRY->value => 1
-        ]
+            TypeEnum::FAIRY->value => 1,
+        ],
     ];
+
     public function run(): void
     {
         foreach (self::MULTIPLIER as $actor => $targets) {
             foreach ($targets as $target => $multiplier) {
                 TypeDamageMultiplier::insert([
-                    "actor_type" => $actor,
-                    "target_type" => $target,
-                    "multiplier" => $multiplier
+                    'actor_type' => $actor,
+                    'target_type' => $target,
+                    'multiplier' => $multiplier,
                 ]);
             }
         }

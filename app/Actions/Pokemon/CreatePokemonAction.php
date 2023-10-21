@@ -14,16 +14,16 @@ class CreatePokemonAction
     public function handle(PokemonDTO $pokemonData): Pokemon
     {
         $pokemon = Pokemon::create([
-            "name" => $pokemonData->name,
-            "current_hp" => $pokemonData->stats->hp,
-            "hp" => $pokemonData->stats->hp,
-            "attack" => $pokemonData->stats->attack,
-            "defense" => $pokemonData->stats->defense,
-            "speed" => $pokemonData->stats->speed,
-            "special_attack" => $pokemonData->stats->specialAttack,
-            "special_defense" => $pokemonData->stats->specialDefense,
-            "types" => $pokemonData->types,
-            "sprite" => $pokemonData->sprite,
+            'name' => $pokemonData->name,
+            'current_hp' => $pokemonData->stats->hp,
+            'hp' => $pokemonData->stats->hp,
+            'attack' => $pokemonData->stats->attack,
+            'defense' => $pokemonData->stats->defense,
+            'speed' => $pokemonData->stats->speed,
+            'special_attack' => $pokemonData->stats->specialAttack,
+            'special_defense' => $pokemonData->stats->specialDefense,
+            'types' => $pokemonData->types,
+            'sprite' => $pokemonData->sprite,
         ]);
 
         foreach ($pokemonData->moves as $move) {

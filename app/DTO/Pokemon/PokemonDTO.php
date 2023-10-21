@@ -3,8 +3,8 @@
 namespace App\DTO\Pokemon;
 
 use App\DTO\Pokemon\Moves\MoveDataDTO;
-use Spatie\LaravelData\Data;
 use Spatie\LaravelData\Attributes\DataCollectionOf;
+use Spatie\LaravelData\Data;
 use Spatie\LaravelData\DataCollection;
 
 class PokemonDTO extends Data

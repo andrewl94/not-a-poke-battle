@@ -13,5 +13,4 @@ class PokemonCandidateEndpointDTO extends Data
         public string $url,
     ) {
     }
-
 }

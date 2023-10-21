@@ -40,19 +40,4 @@ class StartBattleAction
         return new BattleStateDTO(id: $battle->id, playerPokemon: $playerPokemon, npcPokemon: $npcPokemon);
     }
 
-
-    // public function asController(Request $request): View
-    // {
-    //     return view("battle", $this->handle());
-    // }
-
-    public function asController(Request $request)
-    {
-        try {
-            return response()->json($this->handle());
-        } catch (\Throwable $th) {
-            report($th);
-            dd($th->getTraceAsString());
-        }
-    }
 }

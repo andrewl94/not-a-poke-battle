@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Battle extends Model
 {
-    protected $guarded = ["id"];
+    protected $guarded = ['id'];
 
     protected $attributes = [
         'player_pokemon_id' => null,
         'npc_pokemon_id' => null,
     ];
-
 
     public function playerPokemon(): BelongsTo
     {

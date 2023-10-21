@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('move_pokemon', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger("pokemon_id");
+            $table->unsignedBigInteger('pokemon_id');
 
             $table->foreign('pokemon_id')->references('id')->on('pokemon');
 
-            $table->unsignedBigInteger("move_id");
+            $table->unsignedBigInteger('move_id');
 
             $table->foreign('move_id')->references('id')->on('moves');
         });

@@ -14,25 +14,25 @@ return new class extends Migration
         Schema::create('pokemon', function (Blueprint $table) {
             $table->id();
 
-            $table->string("name");
+            $table->string('name');
 
-            $table->unsignedSmallInteger("current_hp");
+            $table->unsignedSmallInteger('current_hp');
 
-            $table->unsignedSmallInteger("hp");
+            $table->unsignedSmallInteger('hp');
 
-            $table->unsignedSmallInteger("attack");
+            $table->unsignedSmallInteger('attack');
 
-            $table->unsignedSmallInteger("defense");
+            $table->unsignedSmallInteger('defense');
 
-            $table->unsignedSmallInteger("speed");
+            $table->unsignedSmallInteger('speed');
 
-            $table->unsignedSmallInteger("special_attack");
+            $table->unsignedSmallInteger('special_attack');
 
-            $table->unsignedSmallInteger("special_defense");
+            $table->unsignedSmallInteger('special_defense');
 
-            $table->json("types");
+            $table->json('types');
 
-            $table->string("sprite");
+            $table->string('sprite');
 
             $table->timestamps();
         });

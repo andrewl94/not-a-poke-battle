@@ -18,7 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 // Route::get('/battle', StartBattleAction::class);
 Route::get('/battle', function () {
     return view('battle');

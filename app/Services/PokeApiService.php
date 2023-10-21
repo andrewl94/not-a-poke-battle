@@ -2,14 +2,11 @@
 
 namespace App\Services;
 
-use Exception;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class PokeApiService
 {
-
-    public function __construct(readonly protected string $baseUrl = "https://pokeapi.co/api/v2")
+    public function __construct(readonly protected string $baseUrl = 'https://pokeapi.co/api/v2')
     {
     }
 
@@ -17,8 +14,8 @@ class PokeApiService
     {
         $limit = 2000;
 
-        $response =  Http::get($this->baseUrl . '/pokemon', [
-            'limit' => $limit
+        $response = Http::get($this->baseUrl.'/pokemon', [
+            'limit' => $limit,
         ])
             ->throw();
 
@@ -27,15 +24,15 @@ class PokeApiService
 
     public function getPokemonInformation(string $pokemonInformationUrl)
     {
-        $response =  Http::get($pokemonInformationUrl)->throw();
+        $response = Http::get($pokemonInformationUrl)->throw();
 
-        return  $response->json();
+        return $response->json();
     }
 
     public function getMoveInformation(string $moveInformationUrl)
     {
-        $response =  Http::get($moveInformationUrl)->throw();
+        $response = Http::get($moveInformationUrl)->throw();
 
-        return  $response->json();
+        return $response->json();
     }
 }

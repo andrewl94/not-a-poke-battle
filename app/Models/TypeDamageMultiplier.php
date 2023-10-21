@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class TypeDamageMultiplier extends Model
 {
     protected $guarded = [];
+
     public $timestamps = false;
 
     protected $casts = [
-        "multiplier" => "float"
+        'multiplier' => 'float',
     ];
 
     protected $attributes = [

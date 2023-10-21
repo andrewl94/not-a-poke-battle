@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('moves', function (Blueprint $table) {
             $table->id();
 
-            $table->string("name");
+            $table->string('name');
 
-            $table->unsignedSmallInteger("power")->nullable();
+            $table->unsignedSmallInteger('power')->nullable();
 
-            $table->unsignedSmallInteger("pp")->nullable();
+            $table->unsignedSmallInteger('pp')->nullable();
 
-            $table->string("type");
+            $table->string('type');
 
             $table->timestamps();
         });
