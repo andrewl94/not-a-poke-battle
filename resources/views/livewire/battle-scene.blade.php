@@ -1,6 +1,6 @@
-<div class="container m-auto px-2 lg:px-6 place-items-center justify-items-center">
+<div class="container m-auto px-2 lg:px-6 place-items-center grid grid-cols-1 h-screen">
 
-    <div class="grid grid-cols-2 py-8 w-full h-56">
+    <div class="grid grid-cols-5 py-8 w-full h-56">
 
         @livewire(
             'pokemon-portrait-component',
@@ -9,10 +9,17 @@
                 'name' => $playerPokemon['name'],
                 'currentHealth' => $playerPokemon['stats']['currentHp'],
                 'maximumHealth' => $playerPokemon['stats']['hp'],
+                'isThePlayer' => true,
             ],
             key($playerPokemon['id'] . $playerPokemon['stats']['currentHp'])
         )
 
+        <div class="grid grid-cols-1 place-items-center">
+            <figure class="w-32 h-32">
+                <img src="https://www.creativefabrica.com/wp-content/uploads/2021/11/29/Versus-Vs-Text-Vector-Transparent-Design-Graphics-20948405-2-580x377.png"
+                    alt="Versus" class="object-cover object-center w-full h-full" />
+            </figure>
+        </div>
         @livewire(
             'pokemon-portrait-component',
             [
@@ -20,6 +27,7 @@
                 'name' => $npcPokemon['name'],
                 'currentHealth' => $npcPokemon['stats']['currentHp'],
                 'maximumHealth' => $npcPokemon['stats']['hp'],
+                'isThePlayer' => false,
             ],
             key($npcPokemon['id'] . $npcPokemon['stats']['currentHp'])
         )
@@ -38,7 +46,7 @@
         <button class="bg-red-600 rounded-lg w-20 h-12 text-white my-4" wire:click="attack">Attack</button>
     </div>
 
-    @if ($gameState === false)
+    @if (0 >= $playerPokemon['stats']['currentHp'])
         <div class="mx-auto place-items-center grid grid-cols-1 ">
             <figure class="w-80 h-80">
                 <img class="object-center object-contain w-full h-full"
@@ -50,7 +58,7 @@
         </div>
     @endif
 
-    @if ($gameState === true)
+    @if (0 >= $npcPokemon['stats']['currentHp'])
         <div class="mx-auto place-items-center grid grid-cols-1 ">
             <figure class="w-80 h-80">
                 <img class="object-center object-contain  w-full h-full"
@@ -61,18 +69,5 @@
                 again</button>
         </div>
     @endif
-
-    <div class="py-6">
-        <div class="text-lg text-center">Battle Log</div>
-        <div class="grid grid-cols-1 place-items-center">
-            @foreach ($battleLog as $log)
-                <div>
-                    <strong class="capitalize">{{ $log['pokemonName'] }}</strong>
-                    used <span class="capitalize">{{ $log['move'] }}</span>
-                    and delt {{ $log['damage'] }} damage.
-                </div>
-            @endforeach
-        </div>
-    </div>
 
 </div>

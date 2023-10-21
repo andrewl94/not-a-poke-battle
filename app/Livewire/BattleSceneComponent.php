@@ -9,8 +9,6 @@ use Livewire\Component;
 
 class BattleSceneComponent extends Component
 {
-    public ?bool $gameState = null;
-
     public ?int $selectedMoveId = null;
 
     public array $battleLog = [];
@@ -28,8 +26,11 @@ class BattleSceneComponent extends Component
 
     public function mount()
     {
-        $battle = StartBattleAction::run();
-        $this->loadBattleState($battle);
+        return retry([500, 1000], function () {
+            $battle = StartBattleAction::run();
+            $this->loadBattleState($battle);
+        });
+
     }
 
     public function loadBattleState(BattleStateDTO $battle)
@@ -43,12 +44,12 @@ class BattleSceneComponent extends Component
 
     public function reload()
     {
-        return redirect('/');
+        return redirect('/battle');
     }
 
     public function attack()
     {
-        if (! $this->selectedMoveId) {
+        if (!$this->selectedMoveId) {
             return;
         }
         $battle = AttackAction::run(battleId: $this->battleId, moveId: $this->selectedMoveId);

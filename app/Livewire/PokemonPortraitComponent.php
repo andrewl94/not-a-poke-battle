@@ -15,6 +15,8 @@ class PokemonPortraitComponent extends Component
 
     public int $maximumHealth;
 
+    public bool $isThePlayer;
+
     #[Computed]
     public function healthPercentage()
     {
