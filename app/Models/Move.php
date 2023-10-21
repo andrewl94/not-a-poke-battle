@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PokemonMove extends Model
+class Move extends Model
 {
-    protected $guarded = ["id"];
+    protected $guarded = [];
 
     protected $attributes = [
-        'pokemon_id' => null,
+        'id' => null,
         'name' => null,
         'power' => null,
         'pp' => null,
@@ -18,6 +18,6 @@ class PokemonMove extends Model
 
     public function pokemon()
     {
-        return $this->belongsTo(Pokemon::class);
+        return $this->belongsToMany(Pokemon::class);
     }
 }

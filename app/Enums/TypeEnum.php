@@ -1,7 +1,7 @@
 <?php
 namespace App\Enums;
 
-enum PokemonTypeEnum: string
+enum TypeEnum: string
 {
     case NORMAL = 'normal';
     case FIRE = 'fire';
@@ -17,7 +17,7 @@ enum PokemonTypeEnum: string
     case BUG = 'bug';
     case ROCK = 'rock';
     case GHOST = 'ghost';
-    case STEEL = 'tteel';
+    case STEEL = 'steel';
     case DARK = 'dark';
     case DRAGON = 'dragon';
     case FAIRY = 'fairy';

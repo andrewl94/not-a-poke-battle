@@ -27,7 +27,7 @@ class Pokemon extends Model
 
     public function moves()
     {
-        return $this->hasMany(PokemonMove::class);
+        return $this->belongsToMany(Move::class);
     }
 
     public function battle()

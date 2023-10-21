@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Battle extends Model
 {
@@ -13,12 +14,13 @@ class Battle extends Model
         'npc_pokemon_id' => null,
     ];
 
-    public function playerPokemon()
+
+    public function playerPokemon(): BelongsTo
     {
         return $this->belongsTo(Pokemon::class);
     }
 
-    public function npcPokemon()
+    public function npcPokemon(): BelongsTo
     {
         return $this->belongsTo(Pokemon::class);
     }

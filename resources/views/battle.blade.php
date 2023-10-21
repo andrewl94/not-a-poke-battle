@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <livewire:mainframe />
+    <livewire:battle-scene-component />
 
     @livewireScripts
 </body>

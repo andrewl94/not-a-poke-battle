@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class PokeApi
+class PokeApiService
 {
 
     public function __construct(readonly protected string $baseUrl = "https://pokeapi.co/api/v2")

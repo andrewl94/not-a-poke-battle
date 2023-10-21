@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use App\DTO\Pokemon\PokemonDTO;
 use App\DTO\Pokemon\PokemonCandidateEndpointDTO;
 
-use App\Services\PokeApi;
+use App\Services\PokeApiService;
 
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -22,7 +22,7 @@ class GetPokemonsForBattleAction
 {
     use AsAction;
 
-    public function __construct(protected PokeApi $pokeApi)
+    public function __construct(protected PokeApiService $pokeApiService)
     {
     }
 
@@ -38,12 +38,7 @@ class GetPokemonsForBattleAction
         $selectedPokemons = [];
 
         foreach ($pokemonsCandidatesForBattle as $pokemonCandidate) {
-            $pokemonInfo = GetPokemonInformationAction::run($pokemonCandidate);
-
-            $selectedPokemons[] = [
-                "name" => $this->formatPokemonName($pokemonCandidate->name),
-                "info" => $pokemonInfo
-            ];
+            $selectedPokemons[] = GetPokemonInformationAction::run($pokemonCandidate);
         }
 
         /** @var DataCollection $pokemonsForBattle */
@@ -63,7 +58,7 @@ class GetPokemonsForBattleAction
 
         $listOfAllPokemons = Cache::remember('list_of_all_pokemons', $oneHourInSeconds, function () {
 
-            $response =  $this->pokeApi->getAllPokemons();
+            $response =  $this->pokeApiService->getAllPokemons();
 
             $validator = Validator::make($response, [
                 'results' => 'required|array|min:2',

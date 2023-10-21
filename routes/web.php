@@ -1,6 +1,6 @@
 <?php
 
-use App\Actions\AssignPlayersAction;
+use App\Actions\StartBattleAction;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +19,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/battle', AssignPlayersAction::class);
+// Route::get('/battle', StartBattleAction::class);
+Route::get('/battle', function () {
+    return view('battle');
+});

@@ -7,6 +7,8 @@ use Spatie\LaravelData\Data;
 class PokemonStatusDTO extends Data
 {
     public function __construct(
+
+        public int $currentHp,
         public int $hp,
         public int $attack,
         public int $defense,

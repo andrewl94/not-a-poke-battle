@@ -7,12 +7,12 @@ use App\Actions\Pokemon\Moves\MoveGetInfoAction;
 use App\DTO\Pokemon\Moves\MoveDataDTO;
 use App\DTO\Pokemon\Moves\MoveEndpointDTO;
 use App\DTO\Pokemon\PokemonCandidateEndpointDTO;
-use App\DTO\Pokemon\PokemonInfoDTO;
+use App\DTO\Pokemon\PokemonDTO;
 use App\DTO\Pokemon\PokemonStatusDTO;
 
 use App\Enums\PokemonStatEnum;
 
-use App\Services\PokeApi;
+use App\Services\PokeApiService;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Collection;
@@ -26,21 +26,21 @@ class GetPokemonInformationAction
 {
     use AsAction;
 
-    public function __construct(protected PokeApi $pokeApi)
+    public function __construct(protected PokeApiService $pokeApiService)
     {
     }
 
-    public function handle(PokemonCandidateEndpointDTO $pokemonCandidateEndpoint): PokemonInfoDTO
+    public function handle(PokemonCandidateEndpointDTO $pokemonCandidateEndpoint): PokemonDTO
     {
         return $this->getPokemonInformation($pokemonCandidateEndpoint);
     }
 
-    private function getPokemonInformation(PokemonCandidateEndpointDTO $pokemonCandidateEndpoint): PokemonInfoDTO
+    private function getPokemonInformation(PokemonCandidateEndpointDTO $pokemonCandidateEndpoint): PokemonDTO
     {
         $oneHourInSeconds = 60 * 60;
 
         $pokemonInformation = Cache::remember($pokemonCandidateEndpoint->url, $oneHourInSeconds, function () use ($pokemonCandidateEndpoint) {
-            $content = $this->pokeApi->getPokemonInformation($pokemonCandidateEndpoint->url);
+            $content = $this->pokeApiService->getPokemonInformation($pokemonCandidateEndpoint->url);
             return collect($content);
         });
 
@@ -52,11 +52,15 @@ class GetPokemonInformationAction
 
         $sprite = $this->getPokemonSprite($pokemonInformation->get("sprites"));
 
-        $pokemonInformation = PokemonInfoDTO::validateAndCreate([
+        $name = $this->formatPokemonName($pokemonInformation->get("name"));
+
+        $pokemonInformation = PokemonDTO::validateAndCreate([
+            "id" => $pokemonInformation->get("id"),
             "stats" => $stats->toArray(),
             "types" => $types->toArray(),
             "moves" => $moves->toArray(),
-            "sprite" => $sprite
+            "sprite" => $sprite,
+            "name" => $name
         ]);
 
         return $pokemonInformation;
@@ -71,12 +75,19 @@ class GetPokemonInformationAction
             return $this->calculateLevel100Stats(statType: $this->formatStatName($stats["stat"]["name"]), statBase: $stats["base_stat"]);
         });
 
+        $statsData["currentHp"] = $statsData["hp"];
+
         return PokemonStatusDTO::validateAndCreate($statsData);
     }
 
     private function formatStatName(string $statName): string
     {
         return Str::of($statName)->camel();
+    }
+
+    private function formatPokemonName(string $pokemonName): string
+    {
+        return Str::of($pokemonName)->headline();
     }
 
     private function calculateLevel100Stats(string $statType, int $statBase = 0): array
@@ -95,7 +106,6 @@ class GetPokemonInformationAction
                 effortValue: $effortValue,
                 level: $level
             );
-
         } else {
 
             $finalStat = $this->calculateLeveledUpStandardStatus(
@@ -104,7 +114,6 @@ class GetPokemonInformationAction
                 effortValue: $effortValue,
                 level: $level
             );
-
         }
         return [
             $statType => $finalStat
@@ -137,7 +146,6 @@ class GetPokemonInformationAction
 
         /** @var DataCollection $moves */
         $moves = MoveDataDTO::collection($moveDatas);
-
         return $moves;
     }
 
@@ -154,10 +162,10 @@ class GetPokemonInformationAction
         return $types;
     }
 
-    private function getPokemonSprite(array $pokemonSprites) : string
+    private function getPokemonSprite(array $pokemonSprites): string
     {
         $sprites = collect($pokemonSprites);
 
-        return $sprites->get("front_default");
+        return $sprites->get("front_default") ?? $sprites->get("front_female") ?? $sprites->get("back_default") ?? $sprites->get("back_female") ?? "https://static.wikia.nocookie.net/pokemonet/images/1/19/Missingno..png/revision/latest?cb=20130505210537&path-prefix=pt-br";
     }
 }
