@@ -49,7 +49,7 @@ class BattleSceneComponent extends Component
 
     public function attack()
     {
-        if (!$this->selectedMoveId) {
+        if (! $this->selectedMoveId) {
             return;
         }
         $battle = AttackAction::run(battleId: $this->battleId, moveId: $this->selectedMoveId);

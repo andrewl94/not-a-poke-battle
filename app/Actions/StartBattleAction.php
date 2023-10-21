@@ -6,7 +6,6 @@ use App\Actions\Battle\CreateBattleAction;
 use App\Actions\Pokemon\CreatePokemonAction;
 use App\Actions\Pokemon\GetPokemonsForBattleAction;
 use App\DTO\BattleStateDTO;
-use Illuminate\Http\Request;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Spatie\LaravelData\DataCollection;
 
@@ -39,5 +38,4 @@ class StartBattleAction
 
         return new BattleStateDTO(id: $battle->id, playerPokemon: $playerPokemon, npcPokemon: $npcPokemon);
     }
-
 }
